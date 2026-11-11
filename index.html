@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LOG FORM — Wear the Form</title>
+  <meta name="description" content="LOG FORM. Contemporary minimalist streetwear. Wear the form.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Manrope:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { ink:'#171717', ivory:'#F3F0E8', char:'#333333', soft:'#A5A5A5' },
+      fontFamily: { display:['"Space Grotesk"','Helvetica Neue','sans-serif'], body:['Inter','sans-serif'], edit:['Manrope','sans-serif'] }
+    }}}
+  </script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-ink text-ivory font-body antialiased">
+
+  <!-- CUSTOM CURSOR (desktop only) -->
+  <div id="cursor" aria-hidden="true"><span id="cursorLabel"></span></div>
+
+  <!-- PRELOADER -->
+  <div id="loader" aria-hidden="true">
+    <div class="mark mark-load"></div>
+    <span class="font-display text-[11px] tracking-[.5em]" id="loadnum">000</span>
+  </div>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="relative z-50 bg-ivory text-ink text-[11px] font-medium uppercase tracking-[.25em]">
+    <div class="mx-auto flex h-9 max-w-[1600px] items-center justify-center px-4 text-center" id="announce">
+      <span class="ann is-on">New collection — Drop 001 is live</span>
+      <span class="ann">Free shipping on orders over $120</span>
+      <span class="ann">Wear the form</span>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <header id="nav" class="fixed inset-x-0 top-9 z-40 mix-blend-difference text-white">
+    <div class="mx-auto flex max-w-[1600px] items-center justify-between px-5 py-5 md:px-10">
+      <a href="#top" class="flex items-center gap-3" aria-label="LOG FORM home">
+        <span class="mark h-6 w-9"></span>
+        <span class="wordmark hidden h-3 w-28 sm:block"></span>
+      </a>
+      <nav class="hidden gap-10 font-display text-[12px] uppercase tracking-[.25em] md:flex">
+        <a class="link-u" href="#new">New Arrivals</a>
+        <a class="link-u" href="#shop">Shop</a>
+        <a class="link-u" href="#collections">Collections</a>
+        <a class="link-u" href="#about">About</a>
+      </nav>
+      <div class="flex items-center gap-5">
+        <button aria-label="Search" class="icon" id="searchBtn"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 5 5"/></svg></button>
+        <button aria-label="Account" class="icon hidden sm:block"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.5 4.5-6 8-6s7 1.5 8 6"/></svg></button>
+        <button aria-label="Bag" class="icon relative" id="bagBtn"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span id="bagCount" class="absolute -right-2 -top-2 font-display text-[10px]">0</span></button>
+        <button aria-label="Menu" class="icon md:hidden" id="menuBtn"><svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 9h16M4 15h16"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div id="mobileMenu" class="fixed inset-0 z-[60] flex flex-col justify-center gap-6 bg-ivory px-8 text-ink">
+    <button id="menuClose" class="absolute right-6 top-14 font-display text-xs tracking-[.3em]">CLOSE ✕</button>
+    <a href="#new" class="mm font-display text-5xl font-bold uppercase tracking-tight">New</a>
+    <a href="#shop" class="mm font-display text-5xl font-bold uppercase tracking-tight">Shop</a>
+    <a href="#collections" class="mm font-display text-5xl font-bold uppercase tracking-tight">Collections</a>
+    <a href="#about" class="mm font-display text-5xl font-bold uppercase tracking-tight">About</a>
+  </div>
+
+  <!-- SEARCH OVERLAY -->
+  <div id="search" class="fixed inset-0 z-[70] overflow-auto bg-ink/95 px-5 py-24 md:px-10" aria-hidden="true">
+    <button class="absolute right-6 top-14 font-display text-xs tracking-[.3em]" id="searchClose">CLOSE ✕</button>
+    <div class="mx-auto max-w-4xl">
+      <input id="searchInput" placeholder="Search LOG FORM" class="w-full border-b border-ivory/40 bg-transparent pb-4 font-display text-4xl font-bold uppercase tracking-tight outline-none placeholder:text-char md:text-7xl" autocomplete="off">
+      <div id="searchRes" class="mt-10 grid gap-4 sm:grid-cols-2"></div>
+    </div>
+  </div>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="relative flex min-h-[100svh] items-end overflow-hidden pb-14 pt-32 md:pb-20 md:pt-40" id="hero">
+      <div class="hero-photo" id="heroPhoto" aria-hidden="true">
+        <picture>
+          <source media="(min-width:768px)" srcset="assets/photo-street.jpg">
+          <img src="assets/photo-studio.jpg" alt="" id="heroImg">
+        </picture>
+        <div class="hero-shade"></div>
+        <div class="hero-grain"></div>
+      </div>
+      <div class="relative z-10 mx-auto w-full max-w-[1600px] px-5 md:px-10">
+        <p class="mb-6 font-edit text-[11px] uppercase tracking-[.4em] text-soft md:text-xs" id="scramble" data-text="Drop 001 — Contemporary Essentials">Drop 001 — Contemporary Essentials</p>
+        <h1 class="font-display text-[clamp(3rem,10.5vw,10rem)] font-bold uppercase leading-[.88] tracking-[-.04em]">
+          <span class="line"><span>Form your</span></span>
+          <span class="line"><span>own <em class="not-italic text-transparent [-webkit-text-stroke:1.5px_#F3F0E8]">identity.</em></span></span>
+        </h1>
+        <div class="mt-10 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <p class="max-w-sm font-edit text-base text-ivory/70 md:text-lg">Contemporary essentials. Designed beyond trends.</p>
+          <div class="flex flex-wrap gap-3">
+            <a href="#shop" class="btn btn-solid magnetic">Shop Collection</a>
+            <a href="#about" class="btn btn-line magnetic">Explore the Brand</a>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-cue absolute bottom-6 left-1/2 hidden -translate-x-1/2 md:block" aria-hidden="true"></div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="overflow-hidden border-y border-ivory/15 py-5" aria-hidden="true">
+      <div class="marquee flex w-max font-display text-sm uppercase tracking-[.5em] text-soft">
+        <span class="pr-12">Wear the form — Log Form — Drop 001 — Numbered batches — Phnom Penh — Designed beyond trends — </span>
+        <span class="pr-12">Wear the form — Log Form — Drop 001 — Numbered batches — Phnom Penh — Designed beyond trends — </span>
+      </div>
+    </div>
+
+    <!-- BANNER -->
+    <section id="banner" class="relative overflow-hidden bg-[#0d0d0d]">
+      <picture>
+        <source media="(min-width:768px)" srcset="assets/banner-desktop.png">
+        <img src="assets/banner-mobile.png" alt="LOG FORM — Wear the form. Drop 001" class="banner-img w-full" loading="lazy">
+      </picture>
+      <a href="#shop" class="flex items-center justify-between border-t border-ivory/15 bg-ink px-5 py-5 font-display text-xs uppercase tracking-[.3em] transition-colors hover:bg-ivory hover:text-ink md:px-10" data-cursor="Shop"><span>Drop 001 — Shop the collection</span><span>→</span></a>
+    </section>
+
+    <!-- FEATURED (asymmetric grid, rendered by script.js) -->
+    <section id="new" class="mx-auto max-w-[1600px] px-5 py-24 md:px-10 md:py-36">
+      <div class="mb-14 flex items-end justify-between gap-6">
+        <h2 class="font-display text-[clamp(2rem,6vw,5rem)] font-bold uppercase leading-none tracking-[-.03em] reveal">Featured<br>Collection</h2>
+        <a href="#shop" class="link-u font-display text-xs uppercase tracking-[.3em]">Shop all ↗</a>
+      </div>
+      <div class="grid grid-cols-2 gap-x-4 gap-y-14 md:grid-cols-12 md:gap-x-6" id="featured"></div>
+    </section>
+
+    <!-- BRAND STATEMENT -->
+    <section id="about" class="relative overflow-hidden bg-ivory py-28 text-ink md:py-44">
+      <div class="mark-faint absolute -right-20 top-10 h-[60%] w-[70%]" aria-hidden="true"></div>
+      <div class="relative mx-auto max-w-[1600px] px-5 md:px-10">
+        <p class="mb-8 font-edit text-[11px] uppercase tracking-[.4em] text-char">Brand statement</p>
+        <h2 class="statement font-display text-[clamp(3.5rem,15vw,14rem)] font-bold uppercase leading-[.82] tracking-[-.05em]" id="statement">
+          <span>Wear</span> <span>the</span> <span>form.</span>
+        </h2>
+        <div class="mt-16 grid gap-10 md:grid-cols-12">
+          <p class="reveal font-edit text-xl leading-snug md:col-span-5 md:col-start-8 md:text-3xl">Clothing is more than what you wear. It's how you express who you are.</p>
+        </div>
+        <div class="mt-24 grid grid-cols-2 gap-8 border-t border-ink/20 pt-10 md:grid-cols-4" id="stats">
+          <div><div class="font-display text-5xl font-bold tracking-tight md:text-7xl"><span class="count" data-to="250">0</span></div><p class="mt-2 font-edit text-xs uppercase tracking-[.3em] text-char">Pieces per batch</p></div>
+          <div><div class="font-display text-5xl font-bold tracking-tight md:text-7xl"><span class="count" data-to="320">0</span></div><p class="mt-2 font-edit text-xs uppercase tracking-[.3em] text-char">GSM heavy cotton</p></div>
+          <div><div class="font-display text-5xl font-bold tracking-tight md:text-7xl"><span class="count" data-to="9">0</span></div><p class="mt-2 font-edit text-xs uppercase tracking-[.3em] text-char">Pieces in Drop 001</p></div>
+          <div><div class="font-display text-5xl font-bold tracking-tight md:text-7xl"><span class="count" data-to="1">0</span></div><p class="mt-2 font-edit text-xs uppercase tracking-[.3em] text-char">City — Phnom Penh</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CAMPAIGN GALLERY (your photos) -->
+    <section id="campaign" class="relative overflow-hidden py-24 md:py-40">
+      <div class="outline-word" data-px="-0.18" aria-hidden="true">LOG FORM — LOG FORM</div>
+      <div class="relative mx-auto max-w-[1600px] px-5 md:px-10">
+        <div class="mb-16 flex flex-col gap-4 md:mb-24 md:flex-row md:items-end md:justify-between">
+          <h2 class="font-display text-[clamp(2.5rem,8vw,7rem)] font-bold uppercase leading-[.88] tracking-[-.04em] reveal">On the<br>street.</h2>
+          <p class="max-w-xs font-edit text-ivory/70 reveal">Campaign 001. Shot where the form lives — concrete, steel, people.</p>
+        </div>
+        <div class="grid grid-cols-12 gap-x-4 gap-y-16 md:gap-x-8">
+          <figure class="col-span-10 md:col-span-5">
+            <div class="parallax" data-speed="0.06"><div class="ir" data-cursor="View"><img src="assets/photo-wall.jpg" alt="Grey tee, concrete wall" loading="lazy" data-zoom></div></div>
+            <figcaption class="cap"><span>01 — Concrete</span><span>Graphic Tee</span></figcaption>
+          </figure>
+          <figure class="col-span-10 col-start-3 md:col-span-4 md:col-start-8 md:mt-40">
+            <div class="parallax" data-speed="-0.04"><div class="ir" data-cursor="View"><img src="assets/photo-studio.jpg" alt="Washed hoodie in studio" loading="lazy" data-zoom></div></div>
+            <figcaption class="cap"><span>02 — Studio</span><span>Washed Hoodie</span></figcaption>
+          </figure>
+          <figure class="col-span-12 md:col-span-9 md:col-start-2">
+            <div class="parallax" data-speed="0.03"><div class="ir wide" data-cursor="View"><img src="assets/photo-street.jpg" alt="Black tee against concrete wall on the street" loading="lazy" data-zoom></div></div>
+            <figcaption class="cap"><span>03 — Street</span><span>Black Graphic Tee</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOOKBOOK: sticky horizontal scroll -->
+    <section id="lookbook" class="relative h-[320vh]">
+      <div class="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
+        <div class="mb-8 flex items-end justify-between px-5 md:px-10">
+          <h2 class="font-display text-[clamp(2rem,6vw,5rem)] font-bold uppercase leading-none tracking-[-.03em]">Lookbook<br><span class="text-transparent [-webkit-text-stroke:1.5px_#F3F0E8]">Drop 001</span></h2>
+          <span class="font-edit text-xs uppercase tracking-[.3em] text-soft"><span id="lbNum">01</span> / <span id="lbTotal">09</span></span>
+        </div>
+        <div id="lbTrack" class="flex w-max gap-6 px-5 will-change-transform md:px-10"></div>
+        <div class="mx-5 mt-8 h-px bg-ivory/20 md:mx-10"><div id="lbBar" class="h-px origin-left bg-ivory" style="transform:scaleX(0)"></div></div>
+      </div>
+    </section>
+
+    <!-- THE INDEX: page flips to ivory, hover a name to preview the piece -->
+    <section id="index" class="relative px-5 py-24 md:px-10 md:py-40">
+      <div class="mx-auto max-w-[1600px]">
+        <div class="mb-12 flex items-end justify-between md:mb-20">
+          <h2 class="font-display text-[clamp(2rem,6vw,5rem)] font-bold uppercase leading-none tracking-[-.03em]">The Index</h2>
+          <span class="font-edit text-xs uppercase tracking-[.3em] opacity-60">Hover — Click to view</span>
+        </div>
+        <div id="idxList"></div>
+      </div>
+    </section>
+    <div id="peek" aria-hidden="true"><img src="" alt=""></div>
+
+    <!-- SHOP ALL (filterable) -->
+    <section id="shop" class="mx-auto max-w-[1600px] px-5 py-24 md:px-10 md:py-36">
+      <div class="mb-10 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+        <h2 class="font-display text-[clamp(2rem,6vw,5rem)] font-bold uppercase leading-none tracking-[-.03em] reveal">Shop All</h2>
+        <div id="filters" class="flex flex-wrap gap-2 font-display text-[11px] uppercase tracking-[.2em]"></div>
+      </div>
+      <div class="grid grid-cols-2 gap-x-4 gap-y-12 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4" id="grid"></div>
+    </section>
+
+    <!-- EDITORIAL CAMPAIGN -->
+    <section id="collections" class="relative border-t border-ivory/15">
+      <div class="grid min-h-[90vh] md:grid-cols-2">
+        <div class="relative min-h-[70vh] overflow-hidden" id="campaignVisual" data-cursor="LF">
+          <img src="assets/photo-wall.jpg" alt="Campaign 001 — LOG FORM graphic tee against a concrete wall" class="photo-fill" data-zoom>
+          <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink/70 to-transparent"></div>
+          <span class="absolute bottom-5 left-5 font-display text-[11px] uppercase tracking-[.3em]">Concrete Series — 02</span>
+        </div>
+        <div class="flex flex-col justify-center gap-8 px-5 py-20 md:px-16">
+          <p class="font-edit text-[11px] uppercase tracking-[.4em] text-soft">Campaign 001 — Architecture of Wear</p>
+          <h2 class="font-display text-[clamp(2.5rem,6vw,6rem)] font-bold uppercase leading-[.9] tracking-[-.04em] reveal">Built like<br>a structure.<br>Worn like<br>a statement.</h2>
+          <p class="max-w-md font-edit text-ivory/70">Sharp angles from the LF monogram, scaled up to the size of the body. Heavy cotton, boxy cuts and quiet tonal prints, made in small numbered batches.</p>
+          <a href="#shop" class="btn btn-solid magnetic w-fit">Explore Campaign</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="mx-auto max-w-[1600px] px-5 py-24 md:px-10 md:py-36">
+      <h2 class="font-display text-[clamp(2rem,6vw,5rem)] font-bold uppercase leading-none tracking-[-.03em] reveal">Get the drop first.</h2>
+      <form class="mt-10 flex max-w-xl border-b border-ivory/40" onsubmit="event.preventDefault(); this.querySelector('input').value=''; this.querySelector('button').textContent='Logged ✓';">
+        <input type="email" required placeholder="Email address" class="w-full bg-transparent py-4 font-edit text-lg outline-none placeholder:text-soft" aria-label="Email">
+        <button class="font-display text-xs uppercase tracking-[.3em]">Join →</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-ivory/15">
+    <div class="mx-auto max-w-[1600px] overflow-hidden px-5 pt-16 md:px-10">
+      <div class="grid gap-10 pb-16 font-edit text-sm text-soft md:grid-cols-4">
+        <div class="flex flex-col gap-5">
+          <a href="#top" class="flex items-center gap-4" aria-label="LOG FORM — back to top">
+            <span class="mark block h-12 w-20"></span>
+            <span class="h-10 w-px bg-ivory/40"></span>
+            <span class="wordmark block h-4 w-36"></span>
+          </a>
+          <p class="max-w-[16rem] leading-relaxed">LOG FORM — wear the form.<br>Contemporary minimalist streetwear.</p>
+          <p class="font-display text-[11px] uppercase tracking-[.25em] text-ivory">Brand built by founder <span class="border-b border-ivory/60">Yany</span></p>
+        </div>
+        <div class="flex flex-col gap-2"><span class="text-ivory">Shop</span><a class="link-u w-fit" href="#new">Featured</a><a class="link-u w-fit" href="#shop">Shop all</a><a class="link-u w-fit" href="#lookbook">Lookbook</a></div>
+        <div class="flex flex-col gap-2"><span class="text-ivory">Brand</span><a class="link-u w-fit" href="#about">About</a><a class="link-u w-fit" href="#">Shipping</a><a class="link-u w-fit" href="#">Returns</a></div>
+        <div class="flex flex-col gap-2"><span class="text-ivory">Follow</span><a class="link-u w-fit" href="#">Instagram</a><a class="link-u w-fit" href="#">TikTok</a><a class="link-u w-fit" href="#">Telegram</a></div>
+      </div>
+      <div class="wordmark foot-word" aria-label="LOG FORM"></div>
+      <div class="flex flex-wrap justify-between gap-4 py-8 font-edit text-xs uppercase tracking-[.25em] text-soft">
+        <span>© 2026 LOG FORM — Founded &amp; built by Yany</span>
+        <span>11.5564° N 104.9282° E — <span id="clock"></span></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- QUICK VIEW MODAL -->
+  <div id="qvModal" class="modal" aria-hidden="true">
+    <div class="modal-bg" data-close></div>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-label="Quick view">
+      <button class="absolute right-5 top-5 z-10 font-display text-xs tracking-[.3em] text-ink" data-close>CLOSE ✕</button>
+      <div class="relative aspect-[1000/1250] bg-ivory md:w-1/2">
+        <img id="qvImg" src="" alt="" class="absolute inset-0 h-full w-full object-cover">
+        <img id="qvImg2" src="" alt="" class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500">
+        <div class="absolute bottom-4 left-4 flex gap-2 font-display text-[10px] uppercase tracking-[.2em] text-ink"><button class="vbtn on" data-v="front">Front</button><button class="vbtn" data-v="back">Back</button></div>
+      </div>
+      <div class="flex flex-col justify-center gap-5 p-8 text-ink md:w-1/2 md:p-12">
+        <span class="font-edit text-[11px] uppercase tracking-[.4em] text-char" id="qvCat">New arrival</span>
+        <h3 id="qvName" class="font-display text-4xl font-bold uppercase tracking-tight"></h3>
+        <p id="qvPrice" class="font-display text-xl"></p>
+        <p id="qvDesc" class="font-edit text-char"></p>
+        <ul id="qvSpec" class="space-y-1 border-t border-ink/20 pt-4 font-edit text-xs uppercase tracking-[.15em] text-char"></ul>
+        <div class="flex gap-2" id="qvSizes"></div>
+        <button id="qvAdd" class="btn btn-ink w-fit">Add to bag</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CART DRAWER -->
+  <div id="cart" aria-hidden="true">
+    <div class="cart-bg" data-cclose></div>
+    <aside class="cart-box">
+      <div class="flex items-center justify-between border-b border-ink/15 p-6"><h3 class="font-display text-sm uppercase tracking-[.3em]">Bag (<span id="cartN">0</span>)</h3><button data-cclose class="font-display text-xs tracking-[.3em]">CLOSE ✕</button></div>
+      <div class="border-b border-ink/15 px-6 py-4"><p id="shipMsg" class="font-edit text-xs uppercase tracking-[.15em]"></p><div class="mt-3 h-[3px] bg-ink/15"><div id="shipBar" class="h-full bg-ink transition-all duration-700" style="width:0"></div></div></div>
+      <div id="cartItems" class="flex-1 overflow-auto"></div>
+      <div class="border-t border-ink/15 p-6"><div class="mb-4 flex justify-between font-display text-sm uppercase tracking-[.2em]"><span>Subtotal</span><span id="cartTotal">$0</span></div><button id="checkout" class="btn btn-ink w-full">Checkout</button></div>
+    </aside>
+  </div>
+
+  <!-- BACK TO TOP (with scroll-progress ring) -->
+  <button id="toTop" aria-label="Back to top" data-cursor="Top">
+    <svg viewBox="0 0 48 48" class="h-full w-full -rotate-90"><circle cx="24" cy="24" r="22" fill="none" stroke="rgba(23,23,23,.2)" stroke-width="2"/><circle id="toTopRing" cx="24" cy="24" r="22" fill="none" stroke="#171717" stroke-width="2" stroke-dasharray="138.2" stroke-dashoffset="138.2"/></svg>
+    <svg viewBox="0 0 24 24" class="absolute inset-0 m-auto h-4 w-4" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+  <div id="progress" aria-hidden="true"></div>
+
+  <div id="toast" role="status"></div>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script src="script.js" defer></script>
+</body>
+</html>
